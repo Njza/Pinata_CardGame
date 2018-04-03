@@ -21,7 +21,7 @@ public class Main {
         main.writer.close();
     }
     //get user input want to play
-    private element getplayercard(Player p) throws IOException {
+    public element getplayercard(Player p) throws IOException {
         System.out.println(p.getName() + " Please input which card you want to play:");
         writer.write(p.getName() + " Please input which card you want to play:" + "\r\n");
         String line;
@@ -46,10 +46,10 @@ public class Main {
         if (cardNum == -1) {
             return null;
         } else
-            return p.getcards(cardNum-1);
+            return p.getCard(cardNum-1);
     }
     //get the location where to put the cards, retun the position
-    private int getlocation(Player p) throws IOException {
+    public int getlocation(Player p) throws IOException {
         String line;
         int location = 0;
         try {
@@ -73,7 +73,7 @@ public class Main {
         return location;
     }
 
-    private void playing(Player p1,Player p2) throws IOException {
+    public void playing(Player p1,Player p2) throws IOException {
         display(p1,p2);
         Player p;
         while (true) {
@@ -130,7 +130,7 @@ public class Main {
         }
     }
     //check the each mat place is full or not return true false to let player put
-    private boolean checkFull(Player p, int i) {
+    public boolean checkFull(Player p, int i) {
         boolean notfull = true;
         if (p.getMatcards(i).size() >= i)
             notfull = false;
@@ -139,7 +139,7 @@ public class Main {
 
     //check the each mat candy color is same as the player played card color
     //if true return true else false
-    private boolean checkColor(element e,Player p, int i) {
+    public boolean checkColor(element e,Player p, int i) {
         boolean matchColor = false;
         if (e.getColors().equals(Color.BLACK)) {
             matchColor = true;
@@ -155,7 +155,7 @@ public class Main {
     }
 
     //check last value can not make them to equal
-    private boolean checkTotalEqual(int i, Player p1, Player p2,element e) {
+    public boolean checkTotalEqual(int i, Player p1, Player p2,element e) {
 
         boolean notEqual = true;
         int totalp1, totalp2;
@@ -171,7 +171,7 @@ public class Main {
     }
 
     // calculate the total num of player put in a mat
-    private int calTotalValue(Player p, int i) {
+    public int calTotalValue(Player p, int i) {
         int total = 0;
         for (int a = 0; a < p.getMatcards(i).size(); a++) {
             total += p.getMatcards(i).get(a).getNum();
@@ -190,7 +190,7 @@ public class Main {
         }
     }
     //compare which player win the candys
-    private Player comparePlayer(boolean state, int location,Player p1,Player p2) {
+    public Player comparePlayer(boolean state, int location,Player p1,Player p2) {
         int num = calTotalValue(p1,location) - calTotalValue(p2,location);
         if (num > 0 && state || num < 0 && !state)
             return p1;
@@ -298,15 +298,15 @@ public class Main {
                 if(i==0){
                     //display each card in each mat that player played
                     for (int b = 0; b < p1.getMatcards(a).size(); b++) {
-                        cardnum = String.valueOf(p1.getcards(i).getNum());
-                        color=p1.getcards(b).colorToString();
+                        cardnum = String.valueOf(p1.getCard(i).getNum());
+                        color=p1.getCard(b).colorToString();
                         System.out.println(padLeft(p1.getName(), 10) + padLeft(cardnum, 5) + padLeft(color, 20));
                         writer.write(padLeft(p1.getName(), 10) + padLeft(cardnum, 5) + padLeft(color, 20) + "\r\n");
                     }
                     //display each card in each mat that another player played
                     for (int b = 0; b < p2.getMatcards(a).size(); b++) {
-                        cardnum = String.valueOf(p2.getcards(b).getNum());
-                        color=p2.getcards(b).colorToString();
+                        cardnum = String.valueOf(p2.getCard(b).getNum());
+                        color=p2.getCard(b).colorToString();
                         System.out.println(padLeft(p2.getName(), 10) + padLeft(cardnum, 5) + padLeft(color, 20));
                         writer.write(padLeft(p2.getName(), 10) + padLeft(cardnum, 5) + padLeft(color, 20) + "\r\n");
                     }
@@ -314,15 +314,15 @@ public class Main {
             }
             //display each card in each mat that player played
             for (int i = 0; i < p1.getMatcards(a).size(); i++) {
-                cardnum = String.valueOf(p1.getcards(i).getNum());
-                color=p1.getcards(i).colorToString();
+                cardnum = String.valueOf(p1.getCard(i).getNum());
+                color=p1.getCard(i).colorToString();
                 System.out.println(padLeft(p1.getName(), 10) + padLeft(cardnum, 5) + padLeft(color, 20));
                 writer.write(padLeft(p1.getName(), 10) + padLeft(cardnum, 5) + padLeft(color, 20) + "\r\n");
             }
             //display each card in each mat that another player played
             for (int i = 0; i < p2.getMatcards(a).size(); i++) {
-                cardnum = String.valueOf(p2.getcards(i).getNum());
-                color=p2.getcards(i).colorToString();
+                cardnum = String.valueOf(p2.getCard(i).getNum());
+                color=p2.getCard(i).colorToString();
                 System.out.println(padLeft(p2.getName(), 10) + padLeft(cardnum, 5) + padLeft(color, 20));
                 writer.write(padLeft(p2.getName(), 10) + padLeft(cardnum, 5) + padLeft(color, 20) + "\r\n");
             }
@@ -337,8 +337,8 @@ public class Main {
         //display player owned cards
         for (int i = 0; i < p1.getPlayerSize(); i++) {
             number = String.valueOf(i+1);
-            cardnum = String.valueOf(p1.getcards(i).getNum());
-            color=p1.getcards(i).colorToString();
+            cardnum = String.valueOf(p1.getCard(i).getNum());
+            color=p1.getCard(i).colorToString();
             System.out.println(padLeft(number, 10) + padLeft(cardnum, 5) + padLeft(color, 20));
             writer.write(padLeft(number, 10) + padLeft(cardnum, 5) + padLeft(color, 20)+"\r\n");
         }

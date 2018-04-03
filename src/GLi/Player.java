@@ -1,41 +1,35 @@
 package GLi;
 
-import java.security.PublicKey;
 import java.util.ArrayList;
 
 public class Player {
     //player cards ArrayList
     private ArrayList<element> player = new ArrayList<>();
-
-    //player candy ArrayList
-    private ArrayList<ArrayList> totalCandy = new ArrayList<>();
+    private ArrayList<ArrayList> totalPlayerCandy = new ArrayList<>();
+    private ArrayList<ArrayList> totalEachMatcards = new ArrayList<>();
+    private ArrayList<ArrayList> totalEachMatCandy = new ArrayList<>();
+    private ArrayList<element> MatCards = new ArrayList<>();
+    private ArrayList<element> MatCandy = new ArrayList<>();
     private ArrayList<element> candy = new ArrayList<>();
-    //player Metal ArrayList
     private ArrayList<element> playerMetal = new ArrayList<>();
-    //player each position card
-    private ArrayList<ArrayList> Matcards = new ArrayList<>();
-    private ArrayList<element> MatCardsplayer = new ArrayList<>();
     private String name;
-
-    private ArrayList<ArrayList> MatCandy = new ArrayList<>();
-    private ArrayList<element> MatCandyplayer = new ArrayList<>();
 
     // pass the name of this player
     public Player(String name) {
         this.name = name;
         for (int i = 0; i < 5; i++) {
             if (i < 4) {
-                Matcards.add(MatCardsplayer);
-                MatCandy.add(MatCandyplayer);
+                totalEachMatcards.add(MatCards);
+                totalEachMatCandy.add(MatCandy);
             }
-            totalCandy.add(candy);
+            totalPlayerCandy.add(candy);
         }
     }
-    //get player owned Metal cards
+    //return Player Metal size
     public int getPlayerMetalSize() {
         return playerMetal.size();
     }
-
+    //return Player card size
     public int getPlayerSize() {
         return player.size();
     }
@@ -44,59 +38,54 @@ public class Player {
     public String getName() {
         return name;
     }
-
     //return the card
-    public element getcards(int id) {
+    public element getCard(int id) {
         return player.get(id);
     }
-    //return each position mat player cards
-    public ArrayList<element> getMatcards(int i) {
-        return Matcards.get(i);
-    }
-    //return each color candy player owned
-    public ArrayList<element> getColoredCandy(int i) {
-        return totalCandy.get(i);
-    }
-    //return each Mat Color left
-    public ArrayList<element> getMatCandy(int i) {
-        return MatCandy.get(i);
-    }
-
-    public element getPlayerMetal(int i) {
-        return playerMetal.get(i);
-    }
-
     //add cards
     public void addCards(element temp) {
         player.add(temp);
     }
 
-    //add the player played card to the poistion mat
+    //return each position mat player cards
+    public ArrayList<element> getMatcards(int i) {
+        return totalEachMatcards.get(i);
+    }
+    //return each color candy player owned
+    public ArrayList<element> getColoredCandy(int i) {
+        return totalPlayerCandy.get(i);
+    }
+    //return each Mat Color left
+    public ArrayList<element> getMatCandy(int i) {
+        return totalEachMatCandy.get(i);
+    }
+    //return player Metal card
+    public element getPlayerMetal(int i) {
+        return playerMetal.get(i);
+    }
+    //add the player played card to the position mat
     public void addMatLocation(int i, element e) {
-        Matcards.get(i).add(e);
+        totalEachMatcards.get(i).add(e);
     }
-
-    //put the player won candy to their own arraylist
-    public void addWonCandy(ArrayList<element> al) {
-        for (int i = 0; i < al.size(); i++) {
-            if (al.get(i).getNum() >= 0 && al.get(i).getNum() < 5)
-                totalCandy.get(0).add(al.get(i));
-            else if (al.get(i).getNum() >= 5 && al.get(i).getNum() < 12)
-                totalCandy.get(1).add(al.get(i));
-            else if (al.get(i).getNum() >= 12 && al.get(i).getNum() < 21)
-                totalCandy.get(2).add(al.get(i));
-            else if (al.get(i).getNum() >= 21 && al.get(i).getNum() < 33)
-                totalCandy.get(3).add(al.get(i));
-            else
-                totalCandy.get(4).add(al.get(i));
-        }
-    }
-
     //put the player won metal to their own arraylist
     public void addWonMetal(element a) {
         playerMetal.add(a);
     }
-
+    //put the player won candy to their own arraylist
+    public void addWonCandy(ArrayList<element> al) {
+        for (int i = 0; i < al.size(); i++) {
+            if (al.get(i).getNum() >= 0 && al.get(i).getNum() < 5)
+                totalPlayerCandy.get(0).add(al.get(i));
+            else if (al.get(i).getNum() >= 5 && al.get(i).getNum() < 12)
+                totalPlayerCandy.get(1).add(al.get(i));
+            else if (al.get(i).getNum() >= 12 && al.get(i).getNum() < 21)
+                totalPlayerCandy.get(2).add(al.get(i));
+            else if (al.get(i).getNum() >= 21 && al.get(i).getNum() < 33)
+                totalPlayerCandy.get(3).add(al.get(i));
+            else
+                totalPlayerCandy.get(4).add(al.get(i));
+        }
+    }
     //play a card and add a new one
     public void removeCards(element oldCard) {
         player.remove(oldCard);
@@ -104,8 +93,18 @@ public class Player {
 
     public void setMatCandy(int i,ArrayList<element>ae) {
         for(int a=0;a<ae.size();a++){
-            MatCandy.get(i).add(ae.get(a));
+            totalEachMatCandy.get(i).add(ae.get(a));
+        }
+    }
+    public void setTotalCandy(int i,ArrayList<element>ae) {
+        for(int a=0;a<ae.size();a++){
+            totalPlayerCandy.get(i).add(ae.get(a));
         }
     }
 
+    public void setMatcards(int i,ArrayList<element>ae) {
+        for(int a=0;a<ae.size();a++){
+            totalEachMatcards.get(i).add(ae.get(a));
+        }
+    }
 }
