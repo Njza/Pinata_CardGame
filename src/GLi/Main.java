@@ -46,7 +46,7 @@ public class Main {
         if (cardNum == -1) {
             return null;
         } else
-            return p.getcards(cardNum);
+            return p.getcards(cardNum-1);
     }
     //get the location where to put the cards, retun the position
     private int getlocation(Player p) throws IOException {
@@ -88,24 +88,22 @@ public class Main {
                 break;
             }
             element temp = getplayercard(p1);
-            //if get a null let user input again
-            if (temp == null) {
-                playing(p1, p2);
-            }
             //get where to put the card
             int location = getlocation(p1);
+            //if get a null let user input again
+            if (temp == null||location==0) {
+                playing(p1, p2);
+            }
             //check is full to put the card and check the card color match the candy color and check last put card value can not make them equal
             for (int index = 0; index <4; index++) {
-                if (location-1!= index) {
-                    return;
-                }
-                if (checkFull(p1, index) && checkColor(temp, p1, index) && checkTotalEqual(index, p1, p2,temp)){
+                if (location - 1 == index) {
+                    if (checkFull(p1, index) && checkColor(temp, p1, index)) {
                         p1.removeCards(temp);
                         p1.addMatLocation(index, temp);
                         p1.addCards(newgame.randomAcard());
-                        if (p1.getMatcards(index).size() == location && p2.getMatcards(index).size() == location) {
-                            boolean state = newgame.Mats.get(location - 1).getMatStates();
-                            p=comparePlayer(state, index, p1, p2);
+                        if (p1.getMatcards(index).size() == location && p2.getMatcards(index).size() == location && checkTotalEqual(index, p1, p2, temp)) {
+                            boolean state = newgame.Mats.get(index).getMatStates();
+                            p = comparePlayer(state, index, p1, p2);
                             p.addWonCandy(newgame.Mats.get(index).getCandy());
                             newgame.Mats.get(index).reverseState();
                             newgame.addcandy(location);
@@ -117,8 +115,8 @@ public class Main {
                             p2.setMatCandy(index, newgame.Mats.get(index).getCandy());
                             winMetal(p1);
                             winMetal(p2);
-                            System.out.println(p.getName()+" You Win The Mat "+newgame.Mats.get(index).getMatValue()+"'s candy");
-                            writer.write(p.getName()+" You Win The Mat "+newgame.Mats.get(index).getMatValue()+"'s candy"+ "\r\n");
+                            System.out.println(p.getName() + " You Win The Mat " + newgame.Mats.get(index).getMatValue() + "'s candy");
+                            writer.write(p.getName() + " You Win The Mat " + newgame.Mats.get(index).getMatValue() + "'s candy" + "\r\n");
                         }
                         playing(p2, p1);
                     } else {
@@ -127,6 +125,7 @@ public class Main {
                         playing(p1, p2);
                     }
 
+                }
             }
         }
     }
@@ -159,7 +158,7 @@ public class Main {
     private boolean checkTotalEqual(int i, Player p1, Player p2,element e) {
 
         boolean notEqual = true;
-        int totalp2 = 0, totalp1 = 0;
+        int totalp1, totalp2;
         if (p2.getMatcards(i).size() == i+1 && p1.getMatcards(i).size() == i) {
             totalp2 = calTotalValue(p2, i);
             totalp1 = calTotalValue(p1, i)+e.getNum();
