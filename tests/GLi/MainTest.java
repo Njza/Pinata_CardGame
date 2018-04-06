@@ -3,19 +3,28 @@ package GLi;
 import org.junit.Test;
 
 import java.awt.*;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import static org.junit.Assert.*;
 
 public class MainTest {
     @Test
-    public void testCheckFull() {
+    public void testFull() {
         Main m = new Main();
         initialise i = new initialise();
         i.player1.addMatLocation(0, i.player1.getCard(0));
         i.player1.addMatLocation(0, i.player1.getCard(1));
-        assertFalse(m.checkFull(i.player1, 0));
+        assertFalse(m.checkFull(i.player1, 1));
     }
+    @Test
+    public void testNotFull() {
+        Main m = new Main();
+        initialise i = new initialise();
+        i.player1.addMatLocation(1, i.player1.getCard(0));
+        assertTrue(m.checkFull(i.player1, 2));
+    }
+
 
     @Test
     public void testMat1Color() {
@@ -85,5 +94,18 @@ public class MainTest {
         p2.setMatcards(2,e2);
         p1.setMatcards(2,e1);
         assertFalse(m.checkTotalEqual(2,p1,p2,card5));
+    }
+
+    @Test
+    public void TestGetCard() throws IOException {
+        Main m=new Main();
+        Player p1=new Player("test");
+        element e1=new element(Color.RED,7);
+        element e2=new element(Color.BLACK,3);
+        p1.addCards(e1);
+        p1.addCards(e2);
+        int num=1;
+        assertEquals(e1,p1.getCard(num-1));
+
     }
 }

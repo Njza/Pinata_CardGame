@@ -16,12 +16,13 @@ public class Main {
         main.newgame = new initialise();
         main.writer = new BufferedWriter(new FileWriter("output.txt"));
         main.intro();
+        main.display(main.newgame.player1,main.newgame.player2);
         main.playing(main.newgame.player1,main.newgame.player2);
         main.writer.flush();
         main.writer.close();
     }
     //get user input want to play
-    public element getplayercard(Player p) throws IOException {
+    public int getplayercard(Player p) throws IOException {
         System.out.println(p.getName() + " Please input which card you want to play:");
         writer.write(p.getName() + " Please input which card you want to play:" + "\r\n");
         String line;
@@ -42,11 +43,7 @@ public class Main {
             System.out.println("You can only input number 1-8");
             writer.write("You can only input number 1-8" + "\r\n");
         }
-        //when not a number return null
-        if (cardNum == -1) {
-            return null;
-        } else
-            return p.getCard(cardNum-1);
+        return cardNum;
     }
     //get the location where to put the cards, retun the position
     public int getlocation(Player p) throws IOException {
@@ -74,7 +71,6 @@ public class Main {
     }
 
     public void playing(Player p1,Player p2) throws IOException {
-        display(p1,p2);
         Player p;
         while (true) {
             if(p1.getPlayerMetalSize()==3){
@@ -87,38 +83,43 @@ public class Main {
                 writer.write(p1.getName()+" YOU WIN!!"+ "\r\n");
                 break;
             }
-            element temp = getplayercard(p1);
+            int num = getplayercard(p1);
             //get where to put the card
             int location = getlocation(p1);
             //if get a null let user input again
-            if (temp == null||location==0) {
+            if (num == -1||location==0) {
                 playing(p1, p2);
             }
+            element e=p1.getCard(num-1);
             //check is full to put the card and check the card color match the candy color and check last put card value can not make them equal
             for (int index = 0; index <4; index++) {
                 if (location - 1 == index) {
-                    if (checkFull(p1, index) && checkColor(temp, p1, index)) {
-                        p1.removeCards(temp);
-                        p1.addMatLocation(index, temp);
-                        p1.addCards(newgame.randomAcard());
-                        if (p1.getMatcards(index).size() == location && p2.getMatcards(index).size() == location && checkTotalEqual(index, p1, p2, temp)) {
-                            boolean state = newgame.Mats.get(index).getMatStates();
-                            p = comparePlayer(state, index, p1, p2);
-                            p.addWonCandy(newgame.Mats.get(index).getCandy());
-                            newgame.Mats.get(index).reverseState();
-                            newgame.addcandy(location);
-                            p1.getMatcards(index).clear();
-                            p2.getMatcards(index).clear();
-                            p1.getMatCandy(index).clear();
-                            p2.getMatCandy(index).clear();
-                            p1.setMatCandy(index, newgame.Mats.get(index).getCandy());
-                            p2.setMatCandy(index, newgame.Mats.get(index).getCandy());
-                            winMetal(p1);
-                            winMetal(p2);
-                            System.out.println(p.getName() + " You Win The Mat " + newgame.Mats.get(index).getMatValue() + "'s candy");
-                            writer.write(p.getName() + " You Win The Mat " + newgame.Mats.get(index).getMatValue() + "'s candy" + "\r\n");
+                    if (checkFull(p1, location) && checkColor(e, p1, index)) {
+                        if(checkTotalEqual(index, p1, p2, e)) {
+                            p1.removeCards(num-1);
+                            p1.addMatLocation(index, e);
+                            p1.addCards(newgame.randomAcard());
+                            if (p1.getMatcards(index).size() == location && p2.getMatcards(index).size() == location) {
+                                boolean state = newgame.Mats.get(index).getMatStates();
+                                p = comparePlayer(state, index, p1, p2);
+                                p.addWonCandy(newgame.Mats.get(index).getCandy());
+                                newgame.Mats.get(index).reverseState();
+                                newgame.Mats.get(index).getCandy().clear();
+                                newgame.addcandy(location);
+                                p1.getMatcards(index).clear();
+                                p2.getMatcards(index).clear();
+                                p1.getMatCandy(index).clear();
+                                p2.getMatCandy(index).clear();
+                                p1.setMatCandy(index, newgame.Mats.get(index).getCandy());
+                                p2.setMatCandy(index, newgame.Mats.get(index).getCandy());
+                                winMetal(p1);
+                                winMetal(p2);
+                                System.out.println(p.getName() + " You Win The Mat " + newgame.Mats.get(index).getMatValue() + "'s candy");
+                                writer.write(p.getName() + " You Win The Mat " + newgame.Mats.get(index).getMatValue() + "'s candy" + "\r\n");
+                            }
+                            display(p2,p1);
+                            playing(p2, p1);
                         }
-                        playing(p2, p1);
                     } else {
                         System.out.println("sorry this card can not put in here please select another one!!");
                         writer.write("sorry this card can not put in here please select another one!!" + "\r\n");
@@ -132,7 +133,7 @@ public class Main {
     //check the each mat place is full or not return true false to let player put
     public boolean checkFull(Player p, int i) {
         boolean notfull = true;
-        if (p.getMatcards(i).size() >= i)
+        if (p.getMatcards(i-1).size() >= i)
             notfull = false;
         return notfull;
     }
@@ -295,39 +296,26 @@ public class Main {
                 color=newgame.Mats.get(a).getCandy().get(i).colorToString();
                 System.out.println(padLeft("Candy",8)+ padLeft(color,10));
                 writer.write(padLeft("Candy",8)+ padLeft(color,10)+ "\r\n");
-                if(i==0){
                     //display each card in each mat that player played
                     for (int b = 0; b < p1.getMatcards(a).size(); b++) {
-                        cardnum = String.valueOf(p1.getCard(i).getNum());
-                        color=p1.getCard(b).colorToString();
-                        System.out.println(padLeft(p1.getName(), 10) + padLeft(cardnum, 5) + padLeft(color, 20));
-                        writer.write(padLeft(p1.getName(), 10) + padLeft(cardnum, 5) + padLeft(color, 20) + "\r\n");
+                        if(p1.getMatcards(i).size()>0) {
+                            cardnum = String.valueOf(p1.getMatcards(i).get(b).getNum());
+                            color = p1.getMatcards(i).get(b).colorToString();
+                            System.out.println(padLeft(p1.getName(), 10) + padLeft(cardnum, 5) + padLeft(color, 20));
+                            writer.write(padLeft(p1.getName(), 10) + padLeft(cardnum, 5) + padLeft(color, 20) + "\r\n");
+                        }
                     }
                     //display each card in each mat that another player played
                     for (int b = 0; b < p2.getMatcards(a).size(); b++) {
-                        cardnum = String.valueOf(p2.getCard(b).getNum());
-                        color=p2.getCard(b).colorToString();
-                        System.out.println(padLeft(p2.getName(), 10) + padLeft(cardnum, 5) + padLeft(color, 20));
-                        writer.write(padLeft(p2.getName(), 10) + padLeft(cardnum, 5) + padLeft(color, 20) + "\r\n");
+                        if(p2.getMatcards(i).size()>0) {
+                            cardnum = String.valueOf(p2.getMatcards(i).get(b).getNum());
+                            color = p2.getMatcards(i).get(b).colorToString();
+                            System.out.println(padLeft(p2.getName(), 10) + padLeft(cardnum, 5) + padLeft(color, 20));
+                            writer.write(padLeft(p2.getName(), 10) + padLeft(cardnum, 5) + padLeft(color, 20) + "\r\n");
+                        }
                     }
-                }
-            }
-            //display each card in each mat that player played
-            for (int i = 0; i < p1.getMatcards(a).size(); i++) {
-                cardnum = String.valueOf(p1.getCard(i).getNum());
-                color=p1.getCard(i).colorToString();
-                System.out.println(padLeft(p1.getName(), 10) + padLeft(cardnum, 5) + padLeft(color, 20));
-                writer.write(padLeft(p1.getName(), 10) + padLeft(cardnum, 5) + padLeft(color, 20) + "\r\n");
-            }
-            //display each card in each mat that another player played
-            for (int i = 0; i < p2.getMatcards(a).size(); i++) {
-                cardnum = String.valueOf(p2.getCard(i).getNum());
-                color=p2.getCard(i).colorToString();
-                System.out.println(padLeft(p2.getName(), 10) + padLeft(cardnum, 5) + padLeft(color, 20));
-                writer.write(padLeft(p2.getName(), 10) + padLeft(cardnum, 5) + padLeft(color, 20) + "\r\n");
             }
         }
-
         System.out.println("                                 ");
         writer.write("                                 " + "\r\n");
         System.out.println(padLeft(p1.getName(), 30));
@@ -349,10 +337,12 @@ public class Main {
         //dispaly player owned candy
         for (int i = 0; i < 5; i++) {
             try {
-                color = p1.getColoredCandy(i).get(0).colorToString();
-                number = String.valueOf(p1.getColoredCandy(i).size());
-                System.out.println(padLeft(color, 3) + padLeft(number, 5) );
-                writer.write(padLeft(color, 3) + padLeft(number, 5) + "\r\n");
+                if(p1.getColoredCandy(i).size()>0) {
+                    color = p1.getColoredCandy(i).get(0).colorToString();
+                    number = String.valueOf(p1.getColoredCandy(i).size());
+                    System.out.println(padLeft(color, 8) + padLeft(number, 5));
+                    writer.write(padLeft(color, 8) + padLeft(number, 5) + "\r\n");
+                }
             }
             catch (Exception ex)
             {
@@ -367,10 +357,12 @@ public class Main {
         //display plpayer owned metal cards
         for (int i = 0; i < p1.getPlayerMetalSize(); i++) {
             try {
-                color = p1.getPlayerMetal(i).colorToString();
-                number = String.valueOf(p1.getPlayerMetal(i).getNum());
-                System.out.println(padLeft(number, 3) + padLeft(color, 5) );
-                writer.write(padLeft(number, 3) + padLeft(color, 5) + "\r\n");
+                if(p1.getPlayerMetalSize()>0) {
+                    color = p1.getPlayerMetal(i).colorToString();
+                    number = String.valueOf(p1.getPlayerMetal(i).getNum());
+                    System.out.println(padLeft(number, 3) + padLeft(color, 5));
+                    writer.write(padLeft(number, 3) + padLeft(color, 5) + "\r\n");
+                }
             }
             catch (Exception ex)
             {

@@ -8,8 +8,6 @@ public class Player {
     private ArrayList<ArrayList> totalPlayerCandy = new ArrayList<>();
     private ArrayList<ArrayList> totalEachMatcards = new ArrayList<>();
     private ArrayList<ArrayList> totalEachMatCandy = new ArrayList<>();
-    private ArrayList<element> MatCards = new ArrayList<>();
-    private ArrayList<element> MatCandy = new ArrayList<>();
     private ArrayList<element> candy = new ArrayList<>();
     private ArrayList<element> playerMetal = new ArrayList<>();
     private String name;
@@ -19,8 +17,8 @@ public class Player {
         this.name = name;
         for (int i = 0; i < 5; i++) {
             if (i < 4) {
-                totalEachMatcards.add(MatCards);
-                totalEachMatCandy.add(MatCandy);
+                totalEachMatcards.add(new ArrayList<element>());
+                totalEachMatCandy.add(new ArrayList<element>());
             }
             totalPlayerCandy.add(candy);
         }
@@ -87,24 +85,25 @@ public class Player {
         }
     }
     //play a card and add a new one
-    public void removeCards(element oldCard) {
-        player.remove(oldCard);
+    public void removeCards(int i) {
+        player.remove(i);
     }
 
     public void setMatCandy(int i,ArrayList<element>ae) {
-        for(int a=0;a<ae.size();a++){
-            totalEachMatCandy.get(i).add(ae.get(a));
-        }
-    }
-    public void setTotalCandy(int i,ArrayList<element>ae) {
-        for(int a=0;a<ae.size();a++){
-            totalPlayerCandy.get(i).add(ae.get(a));
+        for (int index = 0; index < 4; index++) {
+            if (index == i)
+                for (int a = 0; a < ae.size(); a++) {
+                    totalEachMatCandy.get(index).add(ae.get(a));
+                }
         }
     }
 
     public void setMatcards(int i,ArrayList<element>ae) {
-        for(int a=0;a<ae.size();a++){
-            totalEachMatcards.get(i).add(ae.get(a));
+        for (int index = 0; index < 4; index++) {
+            if (index == i)
+                for (int a = 0; a < ae.size(); a++) {
+                    totalEachMatcards.get(index).add(ae.get(a));
+                }
         }
     }
 }

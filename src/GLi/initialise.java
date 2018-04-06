@@ -34,7 +34,7 @@ public class initialise {
             player1.addCards(randomAcard());
             player2.addCards(randomAcard());
         }
-        for(int a=1;a<4;a++){
+        for(int a=0;a<4;a++){
             player1.setMatCandy(a,Mats.get(a).getCandy());
             player2.setMatCandy(a,Mats.get(a).getCandy());
         }
