@@ -8,7 +8,6 @@ public class Player {
     private ArrayList<ArrayList> totalPlayerCandy = new ArrayList<>();
     private ArrayList<ArrayList> totalEachMatcards = new ArrayList<>();
     private ArrayList<ArrayList> totalEachMatCandy = new ArrayList<>();
-    private ArrayList<element> candy = new ArrayList<>();
     private ArrayList<element> playerMetal = new ArrayList<>();
     private String name;
 
@@ -20,7 +19,7 @@ public class Player {
                 totalEachMatcards.add(new ArrayList<element>());
                 totalEachMatCandy.add(new ArrayList<element>());
             }
-            totalPlayerCandy.add(candy);
+            totalPlayerCandy.add(new ArrayList<element>());
         }
     }
     //return Player Metal size
