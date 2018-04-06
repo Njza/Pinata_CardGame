@@ -30,11 +30,15 @@ public class Mat {
         candyMat.add(e);
     }
 
-    public void setCandyMat(ArrayList<element> candyMat) {
-        this.candyMat = candyMat;
-    }
-
     public ArrayList<element> getCandy() {
         return candyMat;
+    }
+    public String getName(){
+        String name;
+        if(matStates)
+            name="UP";
+        else
+            name="DOWN";
+        return name;
     }
 }
