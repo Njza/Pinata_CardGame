@@ -148,7 +148,6 @@ public class Main {
             for (int a = 0; a < p.getMatCandy(i).size(); a++) {
                 if (e.getColors().equals(p.getMatCandy(i).get(a).getColors())) {
                     matchColor = true;
-                    p.getMatCandy(i).remove(a);
                 }
             }
         }
@@ -289,8 +288,8 @@ public class Main {
         //display candys and player played cards
         for (int a = 0; a <4; a++) {
             //display Mats card
-            System.out.println(newgame.Mats.get(a).getMatValue() + "  " + newgame.Mats.get(a).getMatStates());
-            writer.write(newgame.Mats.get(a).getMatValue() + "  " + newgame.Mats.get(a).getMatStates() + "\r\n");
+            System.out.println(newgame.Mats.get(a).getMatValue() + "  " + newgame.Mats.get(a).getName());
+            writer.write(newgame.Mats.get(a).getMatValue() + "  " + newgame.Mats.get(a).getName() + "\r\n");
             //display Mats candys
             for (int i = 0; i < newgame.Mats.get(a).getCandy().size(); i++) {
                 color=newgame.Mats.get(a).getCandy().get(i).colorToString();
@@ -336,13 +335,37 @@ public class Main {
         writer.write(padLeft(p1.getName(), 30) +padLeft("candys: ",30)+ "\r\n");
         //dispaly player owned candy
         for (int i = 0; i < 5; i++) {
-            try {
-                if(p1.getColoredCandy(i).size()>0) {
-                    color = p1.getColoredCandy(i).get(0).colorToString();
-                    number = String.valueOf(p1.getColoredCandy(i).size());
-                    System.out.println(padLeft(color, 8) + padLeft(number, 5));
-                    writer.write(padLeft(color, 8) + padLeft(number, 5) + "\r\n");
-                }
+                try {
+                    if (i == 0) {
+                        color = "Yellow";
+                        number = String.valueOf(p1.getPlayerMetal(i).getNum());
+                        System.out.println(padLeft(number, 3) + padLeft(color, 5));
+                        writer.write(padLeft(number, 3) + padLeft(color, 5) + "\r\n");
+                    }
+                    if (i == 1) {
+                        color = "Pink";
+                        number = String.valueOf(p1.getPlayerMetal(i).getNum());
+                        System.out.println(padLeft(number, 3) + padLeft(color, 5));
+                        writer.write(padLeft(number, 3) + padLeft(color, 5) + "\r\n");
+                    }
+                    if(i==2){
+                        color = "Purple";
+                        number = String.valueOf(p1.getPlayerMetal(i).getNum());
+                        System.out.println(padLeft(number, 3) + padLeft(color, 5));
+                        writer.write(padLeft(number, 3) + padLeft(color, 5) + "\r\n");
+                    }
+                    if(i==3){
+                        color = "Green";
+                        number = String.valueOf(p1.getPlayerMetal(i).getNum());
+                        System.out.println(padLeft(number, 3) + padLeft(color, 5));
+                        writer.write(padLeft(number, 3) + padLeft(color, 5) + "\r\n");
+                    }
+                    if(i==4){
+                        color = "Red";
+                        number = String.valueOf(p1.getPlayerMetal(i).getNum());
+                        System.out.println(padLeft(number, 3) + padLeft(color, 5));
+                        writer.write(padLeft(number, 3) + padLeft(color, 5) + "\r\n");
+                    }
             }
             catch (Exception ex)
             {
