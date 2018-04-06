@@ -6,21 +6,24 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Scanner;
 
-public class Main {
+public class Pinata {
     private Scanner scanner = new Scanner(System.in);
     private BufferedWriter writer;
     private initialise newgame;
 
     public static void main(String[] args) throws IOException {
-        Main main = new Main();
-        main.newgame = new initialise();
-        main.writer = new BufferedWriter(new FileWriter("output.txt"));
-        main.intro();
-        main.display(main.newgame.player1,main.newgame.player2);
-        main.playing(main.newgame.player1,main.newgame.player2);
-        main.writer.flush();
-        main.writer.close();
+        Pinata pinata = new Pinata();
+        pinata.playing(pinata.newgame.player1, pinata.newgame.player2);
+        pinata.writer.flush();
+        pinata.writer.close();
     }
+    public Pinata()throws IOException{
+        newgame = new initialise();
+        writer = new BufferedWriter(new FileWriter("output.txt"));
+        intro();
+        display(newgame.player1,newgame.player2);
+    }
+
     //get user input want to play
     public int getplayercard(Player p) throws IOException {
         System.out.println(p.getName() + " Please input which card you want to play:");
@@ -84,10 +87,13 @@ public class Main {
                 break;
             }
             int num = getplayercard(p1);
+            if(num == -1){
+                playing(p1, p2);
+            }
             //get where to put the card
             int location = getlocation(p1);
             //if get a null let user input again
-            if (num == -1||location==0) {
+            if (location==0) {
                 playing(p1, p2);
             }
             element e=p1.getCard(num-1);
@@ -338,31 +344,31 @@ public class Main {
                 try {
                     if (i == 0) {
                         color = "Yellow";
-                        number = String.valueOf(p1.getPlayerMetal(i).getNum());
+                        number = String.valueOf(p1.getColoredCandy(i).size());
                         System.out.println(padLeft(number, 3) + padLeft(color, 5));
                         writer.write(padLeft(number, 3) + padLeft(color, 5) + "\r\n");
                     }
                     if (i == 1) {
                         color = "Pink";
-                        number = String.valueOf(p1.getPlayerMetal(i).getNum());
+                        number = String.valueOf(p1.getColoredCandy(i).size());
                         System.out.println(padLeft(number, 3) + padLeft(color, 5));
                         writer.write(padLeft(number, 3) + padLeft(color, 5) + "\r\n");
                     }
                     if(i==2){
                         color = "Purple";
-                        number = String.valueOf(p1.getPlayerMetal(i).getNum());
+                        number = String.valueOf(p1.getColoredCandy(i).size());
                         System.out.println(padLeft(number, 3) + padLeft(color, 5));
                         writer.write(padLeft(number, 3) + padLeft(color, 5) + "\r\n");
                     }
                     if(i==3){
                         color = "Green";
-                        number = String.valueOf(p1.getPlayerMetal(i).getNum());
+                        number = String.valueOf(p1.getColoredCandy(i).size());
                         System.out.println(padLeft(number, 3) + padLeft(color, 5));
                         writer.write(padLeft(number, 3) + padLeft(color, 5) + "\r\n");
                     }
                     if(i==4){
                         color = "Red";
-                        number = String.valueOf(p1.getPlayerMetal(i).getNum());
+                        number = String.valueOf(p1.getColoredCandy(i).size());
                         System.out.println(padLeft(number, 3) + padLeft(color, 5));
                         writer.write(padLeft(number, 3) + padLeft(color, 5) + "\r\n");
                     }

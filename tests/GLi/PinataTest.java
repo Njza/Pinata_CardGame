@@ -8,18 +8,18 @@ import java.util.ArrayList;
 
 import static org.junit.Assert.*;
 
-public class MainTest {
+public class PinataTest {
     @Test
-    public void testFull() {
-        Main m = new Main();
+    public void testFull()throws IOException {
+        Pinata m = new Pinata();
         initialise i = new initialise();
         i.player1.addMatLocation(0, i.player1.getCard(0));
         i.player1.addMatLocation(0, i.player1.getCard(1));
         assertFalse(m.checkFull(i.player1, 1));
     }
     @Test
-    public void testNotFull() {
-        Main m = new Main();
+    public void testNotFull()throws IOException {
+        Pinata m = new Pinata();
         initialise i = new initialise();
         i.player1.addMatLocation(1, i.player1.getCard(0));
         assertTrue(m.checkFull(i.player1, 2));
@@ -27,8 +27,8 @@ public class MainTest {
 
 
     @Test
-    public void testMat1Color() {
-        Main m = new Main();
+    public void testMat1Color()throws IOException {
+        Pinata m = new Pinata();
         Player p=new Player("test");
         ArrayList<element>a=new ArrayList<>();
         element candy=new element(Color.GREEN,1);
@@ -42,8 +42,8 @@ public class MainTest {
         assertTrue(m.checkColor(cardB,p,0));
     }
     @Test
-    public void testMat2Color() {
-        Main m = new Main();
+    public void testMat2Color()throws IOException {
+        Pinata m = new Pinata();
         Player p=new Player("test");
         ArrayList<element>a=new ArrayList<>();
         element candy1=new element(Color.GREEN,1);
@@ -62,8 +62,8 @@ public class MainTest {
     }
 
     @Test
-    public void testCheckTotalNotEqual() {
-        Main m = new Main();
+    public void testCheckTotalNotEqual()throws IOException {
+        Pinata m = new Pinata();
         ArrayList<element>e =new ArrayList<>();
         Player p1=new Player("Test1");
         Player p2=new Player("Test2");
@@ -74,8 +74,8 @@ public class MainTest {
         assertTrue(m.checkTotalEqual(0,p1,p2,card2));
     }
     @Test
-    public void testCheckTotalEqual() {
-        Main m = new Main();
+    public void testCheckTotalEqual()throws IOException {
+        Pinata m = new Pinata();
         ArrayList<element>e1 =new ArrayList<>();
         ArrayList<element>e2 =new ArrayList<>();
         Player p1=new Player("Test1");
@@ -98,7 +98,7 @@ public class MainTest {
 
     @Test
     public void TestGetCard() throws IOException {
-        Main m=new Main();
+        Pinata m=new Pinata();
         Player p1=new Player("test");
         element e1=new element(Color.RED,7);
         element e2=new element(Color.BLACK,3);
