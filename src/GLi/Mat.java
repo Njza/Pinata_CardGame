@@ -1,44 +1,38 @@
 package GLi;
 
+import javax.swing.*;
 import java.util.ArrayList;
 
-public class Mat {
-    private int matValue;
-    private boolean matStates;
+public class Mat extends element {
+
     private ArrayList<element> candyMat = new ArrayList<>();
 
-    public Mat(int _matValue, boolean _matStates) {
-        this.matStates = _matStates;
-        this.matValue = _matValue;
-    }
-
-    public int getMatValue() {
-        return matValue;
-    }
-
-    public boolean getMatStates() {
-        return this.matStates;
+    public Mat(String matStates, int matValue) {
+        super(matStates, matValue);
     }
 
     public void reverseState() {
-        if(matStates==true)
-            matStates=false;
+        if (getColors().equals("up"))
+            setColors("down");
         else
-            matStates=true;
+            setColors("up");
     }
-    public void addCandy(element e){
+
+    public void addCandy(element e) {
         candyMat.add(e);
     }
 
     public ArrayList<element> getCandy() {
         return candyMat;
     }
-    public String getName(){
-        String name;
-        if(matStates)
-            name="UP";
-        else
-            name="DOWN";
-        return name;
+
+    public void setCandyMat(ArrayList<element> candyMat) {
+        this.candyMat = candyMat;
+    }
+
+    @Override
+    public void showCard() {
+        setPicture("img/" +getColors()+ getElementNum() + ".png");
+        this.setIcon(new ImageIcon(getPicture()));
     }
 }
